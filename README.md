@@ -99,19 +99,36 @@ class CardRecordAdapter extends RecyclerAdapter<Consumption> {
     }
 }
 ```
+###修改提示上拉布局需要重写view_status_last.xml布局，id保持不变
+```java
+   <LinearLayout
+        android:id="@+id/load_more_view"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:visibility="gone">
 
-###MultiTypeAdapter
 
->复杂数据类型列表，没有Header,Footer的概念，每个Item对应一个ViewHolder
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="正在加载，这个修改过..."
+            android:textSize="16sp" />
 
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/no_more_view"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:text="没有更多了~这个修改过"
+        android:textSize="16sp"
+        android:visibility="gone" />
 ```
- private MultiTypeAdapter mAdapter;
- mAdapter.add(ImageViewHolder.class, getImageVirtualData());
- mAdapter.addAll(TextViewHolder.class, getTextVirtualData());
- mAdapter.addAll(TextImageViewHolder.class, getTextImageVirualData());
- mAdapter.addAll(CardRecordHolder.class, getRecordVirtualData());
-```
-
 ###ViewHolder
 
 >自定义ViewHolder需继承BaseViewHolder<T>，如：
@@ -153,7 +170,7 @@ class CardRecordAdapter extends RecyclerAdapter<Consumption> {
  - 依赖了其他库
 
 ```
-      compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.android.support:support-annotations:23.4.0'
 ```
 
