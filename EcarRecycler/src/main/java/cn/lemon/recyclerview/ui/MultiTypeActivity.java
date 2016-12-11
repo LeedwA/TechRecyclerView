@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.ecar.recycler.RefreshRecyclerView;
 import com.ecar.recycler.adapter.Action;
+import com.ecar.recycler.adapter.MultiTypeAdapter;
 
 import cn.lemon.recyclerview.R;
 import cn.lemon.recyclerview.ui.bean.Consumption;

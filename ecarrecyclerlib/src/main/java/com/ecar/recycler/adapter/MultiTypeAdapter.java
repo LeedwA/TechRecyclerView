@@ -1,13 +1,9 @@
-package cn.lemon.recyclerview.ui;
+package com.ecar.recycler.adapter;
 
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.ecar.recycler.adapter.BaseViewHolder;
-import com.ecar.recycler.adapter.RecyclerAdapter;
-import com.ecar.recycler.adapter.ViewHolderManager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
