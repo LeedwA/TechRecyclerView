@@ -7,7 +7,8 @@
  - gradle依赖
 
 ```
-   compile 'cn.lemon:RefreshRecyclerView:0.1.7'
+   compile 'com.github.goEcar:EcarRecyclerView:1.0.0'
+
 ```
 
  - xml布局文件
@@ -25,25 +26,58 @@
 
 ```
    mRecyclerView = (RefreshRecyclerView) findViewById(R.id.recycler_view);
-   mRecyclerView.setSwipeRefreshColors(0xFF437845,0xFFE44F98,0xFF2FAC21);
-   mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-   mRecyclerView.setAdapter(mAdapter);
-   mRecyclerView.setRefreshAction(new Action() {
-        @Override
-        public void onAction() {
-            getData(true);
-        }
-   });
+        mAdapter = new CardRecordAdapter(this);
+        listViewManager = new ListViewManager(this, mRecyclerView, mAdapter);
+//        添加Header
+        final TextView textView = new TextView(this);
+        textView.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100));
+        textView.setTextSize(16);
+        textView.setGravity(Gravity.CENTER);
+        textView.setText("我是header");
+        listViewManager.setHeader(textView);
 
-   mRecyclerView.setLoadMoreAction(new Action() {
-        @Override
-        public void onAction() {
-            getData(false);
-            page++;
-        }
-   });
-   mAdapter.setHeader(textView); //添加Header
-   mAdapter.setFooter(footer); //添加Footer
+        //添加footer
+        final TextView footer = new TextView(this);
+        footer.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100));
+        footer.setTextSize(16);
+        footer.setGravity(Gravity.CENTER);
+        footer.setText("我是Footer");
+        listViewManager.setFooter(footer);
+
+        //顶部颜色
+        listViewManager.setTopColor(getResources().getColor(R.color.blue_light),
+                getResources().getColor(R.color.blue_light),
+                getResources().getColor(R.color.grey));
+
+        //下拉刷新
+        listViewManager.setTopRefresh(new Action() {
+            @Override
+            public void onAction() {
+                listViewManager.getData(true, Arrays.asList(getVirtualData()));
+            }
+        });
+
+        //上拉加载
+        listViewManager.setMoreData(new Action() {
+            @Override
+            public void onAction() {
+                listViewManager.getData(false, Arrays.asList(getVirtualData()));
+                listViewManager.page++;
+            }
+        });
+
+        //是否允许上拉加载
+        listViewManager.setEnableMore(false);
+        //是否允许下拉刷新
+        listViewManager.setEnableRefresh(true);
+
+        // 设置listview为空的时候显示的view
+        listViewManager.setEmptyView(findViewById(R.id.iv_empty));
+
+
+        //初始化数据
+        listViewManager.initData(Arrays.asList(getVirtualData()));
+
 ```
                 
 ###RecyclerAdapter
@@ -65,19 +99,36 @@ class CardRecordAdapter extends RecyclerAdapter<Consumption> {
     }
 }
 ```
+###修改提示上拉布局需要重写view_status_last.xml布局，id保持不变
+```java
+   <LinearLayout
+        android:id="@+id/load_more_view"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:visibility="gone">
 
-###MultiTypeAdapter
 
->复杂数据类型列表，没有Header,Footer的概念，每个Item对应一个ViewHolder
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="正在加载，这个修改过..."
+            android:textSize="16sp" />
 
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/no_more_view"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:text="没有更多了~这个修改过"
+        android:textSize="16sp"
+        android:visibility="gone" />
 ```
- private MultiTypeAdapter mAdapter;
- mAdapter.add(ImageViewHolder.class, getImageVirtualData());
- mAdapter.addAll(TextViewHolder.class, getTextVirtualData());
- mAdapter.addAll(TextImageViewHolder.class, getTextImageVirualData());
- mAdapter.addAll(CardRecordHolder.class, getRecordVirtualData());
-```
-
 ###ViewHolder
 
 >自定义ViewHolder需继承BaseViewHolder<T>，如：
@@ -113,7 +164,6 @@ class CardRecordAdapter extends RecyclerAdapter<Consumption> {
  ```
  **注意**：MultiTypeAdapter的ViewHolder的构造函数保证能反射时获取，应该写成静态或者public的单独类
 
-[详细用法请看Demo](https://github.com/llxdaxia/RecyclerView/tree/master/demo)
 
 ### 注意事项
 
@@ -125,4 +175,3 @@ class CardRecordAdapter extends RecyclerAdapter<Consumption> {
 ```
 
 <img src="screenshot/RecyclerAdapter.png" width="270" height="480"/>
-<img src="screenshot/MultiTypeAdapter.png" width="270" height="480"/>
