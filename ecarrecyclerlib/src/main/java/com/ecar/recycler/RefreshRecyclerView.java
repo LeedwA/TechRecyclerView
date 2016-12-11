@@ -69,11 +69,12 @@ public class RefreshRecyclerView extends FrameLayout {
     };
 
     public void setEmptyView(View emptyView) {
-        if(mAdapter!=null)
+        if (mAdapter != null)
             mAdapter.setEmptyView(emptyView);
-        Log.d("abc","setEmptyViewm");
+        Log.d("abc", "setEmptyViewm");
 
     }
+
     /****************************************
      * 方法描述： 检测是否为空
      *
@@ -81,11 +82,13 @@ public class RefreshRecyclerView extends FrameLayout {
      * @return
      ****************************************/
     void checkIfEmpty() {
-        if (mAdapter != null && mAdapter.emptyView != null) {
+        if (mAdapter != null) {
             int footerCount = mAdapter.getFooter() == null ? 0 : 1;
             int headerCount = mAdapter.getHeader() == null ? 0 : 1;
             final boolean emptyViewVisible = mAdapter.getItemCount() - footerCount - headerCount == 1;
-            mAdapter.emptyView.setVisibility(emptyViewVisible ? VISIBLE : GONE);
+            if (mAdapter.emptyView != null)
+                mAdapter.emptyView.setVisibility(emptyViewVisible ? VISIBLE : GONE);
+
             setVisibility(emptyViewVisible ? GONE : VISIBLE);
         }
     }
