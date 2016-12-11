@@ -7,6 +7,17 @@
     android:orientation="vertical"
     tools:context=".ui.MainActivity">
 
+    <LinearLayout
+        android:id="@+id/lalay"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="多种格式" />
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
