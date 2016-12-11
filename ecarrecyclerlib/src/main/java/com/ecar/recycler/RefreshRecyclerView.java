@@ -44,45 +44,48 @@ public class RefreshRecyclerView extends FrameLayout {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.$_recycler_view);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.$_refresh_layout);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RefreshRecyclerView);
-        refreshAble = typedArray.getBoolean(R.styleable.RefreshRecyclerView_refresh_able,true);
-        loadMoreAble = typedArray.getBoolean(R.styleable.RefreshRecyclerView_load_more_able,true);
-        if(!refreshAble){
+        refreshAble = typedArray.getBoolean(R.styleable.RefreshRecyclerView_refresh_able, true);
+        loadMoreAble = typedArray.getBoolean(R.styleable.RefreshRecyclerView_load_more_able, true);
+        if (!refreshAble) {
             mSwipeRefreshLayout.setEnabled(false);
         }
     }
 
-    private View emptyView;  //listview空的时候调用的类
     final private RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
+
         @Override
         public void onChanged() {
             checkIfEmpty();
+            Log.d("abc", "onChangedd");
         }
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
             checkIfEmpty();
+            Log.d("abc", "onItemRangeInserted");
+
         }
 
-        @Override
-        public void onItemRangeRemoved(int positionStart, int itemCount) {
-            checkIfEmpty();
-        }
     };
 
     public void setEmptyView(View emptyView) {
-        this.emptyView = emptyView;
-        checkIfEmpty();
-    }
+        if(mAdapter!=null)
+            mAdapter.setEmptyView(emptyView);
+        Log.d("abc","setEmptyViewm");
 
+    }
     /****************************************
-     方法描述： 检测是否为空
-     @param
-     @return
+     * 方法描述： 检测是否为空
+     *
+     * @param
+     * @return
      ****************************************/
     void checkIfEmpty() {
-        if (emptyView != null && mRecyclerView.getAdapter() != null) {
-            final boolean emptyViewVisible = mRecyclerView.getAdapter().getItemCount() == 1;
-            emptyView.setVisibility(emptyViewVisible ? VISIBLE : GONE);
+        if (mAdapter != null && mAdapter.emptyView != null) {
+            int footerCount = mAdapter.getFooter() == null ? 0 : 1;
+            int headerCount = mAdapter.getHeader() == null ? 0 : 1;
+            final boolean emptyViewVisible = mAdapter.getItemCount() - footerCount - headerCount == 1;
+            mAdapter.emptyView.setVisibility(emptyViewVisible ? VISIBLE : GONE);
             setVisibility(emptyViewVisible ? GONE : VISIBLE);
         }
     }
@@ -98,10 +101,10 @@ public class RefreshRecyclerView extends FrameLayout {
             adapter.registerAdapterDataObserver(observer);
         }
 
-        checkIfEmpty();
-
         mAdapter = adapter;
         mAdapter.loadMoreAble = loadMoreAble;
+//        checkIfEmpty();
+
 
     }
 
@@ -113,6 +116,7 @@ public class RefreshRecyclerView extends FrameLayout {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+
                 mAdapter.isRefreshing = true;
                 action.onAction();
             }
@@ -145,7 +149,7 @@ public class RefreshRecyclerView extends FrameLayout {
         return mSwipeRefreshLayout;
     }
 
-    public TextView getNoMoreView(){
+    public TextView getNoMoreView() {
         return mAdapter.mNoMoreView;
     }
 

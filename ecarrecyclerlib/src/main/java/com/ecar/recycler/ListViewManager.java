@@ -9,6 +9,8 @@ import java.util.List;
 import com.ecar.recycler.adapter.Action;
 import com.ecar.recycler.adapter.RecyclerAdapter;
 
+import static android.R.id.list;
+
 /*************************************
  * 功能： listview管理器
  * 创建者： kim_tony
@@ -30,7 +32,7 @@ public class ListViewManager<T> {
 
 
     /****************************************
-     * 方法描述： 狗仔方法
+     * 方法描述： 构造方法
      *
      * @param
      * @return
@@ -45,16 +47,13 @@ public class ListViewManager<T> {
         datas = new Datas() {
             @Override
             public void onRefresh(List list) {
-                if(list==null||list.isEmpty()){
-                   if(page==1){
-                       recyclerAdapter.clear();
-                   }
-                }else{
-                    recyclerAdapter.clear();
+                if (list == null || list.isEmpty()) {
+                    recyclerAdapter.clear(refreshRecyclerView);
+                } else {
+                    recyclerAdapter.clear(refreshRecyclerView);
                     recyclerAdapter.addAll(list);
                 }
                 refreshRecyclerView.dismissSwipeRefresh();
-
                 page = 1;
 
             }
@@ -132,9 +131,10 @@ public class ListViewManager<T> {
     }
 
     /****************************************
-     方法描述：是否允许下拉刷新
-     @param
-     @return
+     * 方法描述：是否允许下拉刷新
+     *
+     * @param
+     * @return
      ****************************************/
     public void setEnableRefresh(boolean enable) {
         refreshRecyclerView.getSwipeRefreshLayout().setEnabled(enable);
@@ -148,7 +148,6 @@ public class ListViewManager<T> {
      * @return
      ****************************************/
     public void getData(final boolean isRefresh, final List list) {
-
         refreshRecyclerView.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -158,7 +157,7 @@ public class ListViewManager<T> {
                     datas.onGetMore(list);
                 }
             }
-        }, 1500);
+        }, 100);
     }
 
 
@@ -169,11 +168,12 @@ public class ListViewManager<T> {
     }
 
     /****************************************
-     方法描述： 是否允许下拉加载
-     @param    enableMore true 允许
-     @return
+     * 方法描述： 是否允许下拉加载
+     *
+     * @param enableMore true 允许
+     * @return
      ****************************************/
-    public void setEnableMore(boolean enableMore){
+    public void setEnableMore(boolean enableMore) {
         recyclerAdapter.hideStatusView(!enableMore);
     }
 

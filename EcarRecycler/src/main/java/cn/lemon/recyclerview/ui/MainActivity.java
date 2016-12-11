@@ -4,16 +4,20 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ecar.recycler.ListViewManager;
+import com.ecar.recycler.RefreshRecyclerView;
+import com.ecar.recycler.adapter.Action;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import cn.lemon.recyclerview.R;
 import cn.lemon.recyclerview.ui.bean.Consumption;
-import com.ecar.recycler.ListViewManager;
-import com.ecar.recycler.RefreshRecyclerView;
-import com.ecar.recycler.adapter.Action;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ((ImageView)findViewById(R.id.imageView1)).setVisibility(View.GONE);
+
         mRecyclerView = (RefreshRecyclerView) findViewById(R.id.recycler_view);
         mAdapter = new CardRecordAdapter(this);
         listViewManager = new ListViewManager(this, mRecyclerView, mAdapter);
@@ -54,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
         listViewManager.setTopRefresh(new Action() {
             @Override
             public void onAction() {
-                listViewManager.getData(true, Arrays.asList(getVirtualData()));
+                listViewManager.page=1;
+                listViewManager.getData(true, new ArrayList());
             }
         });
 
@@ -86,22 +93,23 @@ public class MainActivity extends AppCompatActivity {
     public Consumption[] getVirtualData() {
         if (listViewManager.page < 3) {
             return new Consumption[]{
-                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼")
+//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                    new Consumption("Demo1", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼")
             };
         } else {
             return new Consumption[]{
 
             };
         }
+
 
     }
 }

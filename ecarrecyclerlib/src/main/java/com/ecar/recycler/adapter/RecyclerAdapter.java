@@ -11,6 +11,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ecar.recycler.RefreshRecyclerView;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -267,8 +269,14 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<BaseViewHo
         mViewCount--;
     }
 
-    public void clear() {
+    /****************************************
+     方法描述： 清楚adapter
+     @param   view
+     @return
+     ****************************************/
+    public void clear(RefreshRecyclerView view) {
         if (mData == null || mData.size() == 0) {
+            showEmpty(view);
             return;
         }
         mData.clear();
@@ -281,13 +289,25 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<BaseViewHo
         }
         notifyDataSetChanged();
 
+        showEmpty(view);
+    }
+
+    private void showEmpty(RefreshRecyclerView listView) {
         isRefreshing = false;
         isShowNoMore = false;
         isLoadingMore = false;
+        listView.setVisibility(View.GONE);
         mLoadMoreView.setVisibility(View.GONE);
         mNoMoreView.setVisibility(View.GONE);
+        if (emptyView != null)
+            emptyView.setVisibility(View.VISIBLE);
     }
 
+    public View emptyView;
+
+    public void setEmptyView(View EmptyView) {
+        this.emptyView = EmptyView;
+    }
 
     public void setHeader(View header) {
         hasHeader = true;
@@ -330,7 +350,7 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<BaseViewHo
     }
 
     public List<T> getData() {
-        return mData;
+        return mData == null || mData.isEmpty() ? mData = new ArrayList<>() : mData;
     }
 
     public Context getContext() {

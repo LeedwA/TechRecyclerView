@@ -1,1 +1,1 @@
-include ':demo', ':ecarrecyclerlib'
+include ':EcarRecycler', ':ecarrecyclerlib'
