@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -43,6 +44,8 @@ public class RefreshRecyclerView extends FrameLayout {
         View view = inflate(context, R.layout.view_refresh_recycler, this);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.$_recycler_view);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.$_refresh_layout);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mSwipeRefreshLayout.getContext()));
+
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RefreshRecyclerView);
         refreshAble = typedArray.getBoolean(R.styleable.RefreshRecyclerView_refresh_able, true);
         loadMoreAble = typedArray.getBoolean(R.styleable.RefreshRecyclerView_load_more_able, true);
@@ -63,6 +66,7 @@ public class RefreshRecyclerView extends FrameLayout {
         public void onItemRangeInserted(int positionStart, int itemCount) {
             checkIfEmpty();
             Log.d("abc", "onItemRangeInserted");
+
 
         }
 
