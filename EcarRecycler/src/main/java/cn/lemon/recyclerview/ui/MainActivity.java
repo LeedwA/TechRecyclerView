@@ -60,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
         footer.setText("我是Footer");
         mAdapter.setFooter(footer);
 
-//        toInitrefreshRecycler();
+        toInitrefreshRecycler();
 
-        toInitRecycler();
+//        toInitRecycler();
 
     }
 

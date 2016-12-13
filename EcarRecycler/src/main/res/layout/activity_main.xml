@@ -19,26 +19,15 @@
             android:text="多种格式" />
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
 
-        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/$_refresh_layout"
+        <com.ecar.recycler.RefreshRecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/blue_light">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:visibility="visible" />
-        </android.support.v4.widget.SwipeRefreshLayout>
-
+            android:layout_height="wrap_content" />
 
         <View
             android:layout_width="100dp"
@@ -46,20 +35,19 @@
             android:layout_below="@id/recycler_view"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:background="@color/blue_light"
             android:visibility="visible" />
 
         <View
             android:id="@+id/iv_empty"
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@id/recycler_view"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:background="@color/blue_light"
             android:visibility="visible" />
-    </LinearLayout>
 
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/imageView1"
