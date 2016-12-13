@@ -44,7 +44,7 @@ public class RefreshRecyclerView extends FrameLayout {
         View view = inflate(context, R.layout.view_refresh_recycler, this);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.$_recycler_view);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.$_refresh_layout);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mSwipeRefreshLayout.getContext()));
+
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RefreshRecyclerView);
         refreshAble = typedArray.getBoolean(R.styleable.RefreshRecyclerView_refresh_able, true);
@@ -59,13 +59,11 @@ public class RefreshRecyclerView extends FrameLayout {
         @Override
         public void onChanged() {
             checkIfEmpty();
-            Log.d("abc", "onChangedd");
         }
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
             checkIfEmpty();
-            Log.d("abc", "onItemRangeInserted");
 
 
         }
@@ -75,7 +73,6 @@ public class RefreshRecyclerView extends FrameLayout {
     public void setEmptyView(View emptyView) {
         if (mAdapter != null)
             mAdapter.setEmptyView(emptyView);
-        Log.d("abc", "setEmptyViewm");
 
     }
 
@@ -131,16 +128,15 @@ public class RefreshRecyclerView extends FrameLayout {
     }
 
     public void setLoadMoreAction(final Action action) {
-        Log.i(TAG, "setLoadMoreAction");
         if (mAdapter.isShowNoMore || !loadMoreAble) {
             return;
         }
         mAdapter.loadMoreAble = true;
         mAdapter.setLoadMoreAction(action);
     }
-
-    public void showNoMore() {
-        mAdapter.showNoMore();
+    //showStatus  true 显示状态脚
+    public void showNoMore(boolean showStatus) {
+        mAdapter.showNoMore(showStatus);
     }
 
 

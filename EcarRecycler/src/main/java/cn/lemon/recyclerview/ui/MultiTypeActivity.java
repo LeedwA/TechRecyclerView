@@ -72,7 +72,7 @@ public class MultiTypeActivity extends AppCompatActivity {
                 mAdapter.addAll(TextImageViewHolder.class, getTextImageVirualData());
                 mAdapter.addAll(CardRecordHolder.class, getRecordVirtualData());
                 if (mPage >= 3) {
-                    mAdapter.showNoMore();
+                    mAdapter.showNoMore(true);
                 }
             }
         }, 1000);

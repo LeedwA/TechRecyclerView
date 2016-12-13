@@ -89,7 +89,6 @@ public class MultiTypeAdapter extends RecyclerAdapter {
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        log("onCreateViewHolder -- viewType : " + viewType);
         if (viewType == STATUS_TYPE) {
             return new BaseViewHolder(mStatusView);
         }
@@ -107,16 +106,12 @@ public class MultiTypeAdapter extends RecyclerAdapter {
             return holder;
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
-            Log.i(TAG, "onCreateBaseViewHolder : " + e.getMessage());
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            Log.i(TAG, "onCreateBaseViewHolder : " + e.getMessage());
         } catch (InstantiationException e) {
             e.printStackTrace();
-            Log.i(TAG, "onCreateBaseViewHolder : " + e.getMessage());
         } catch (InvocationTargetException e) {
             e.printStackTrace();
-            Log.i(TAG, "onCreateBaseViewHolder : " + e.getMessage());
         }
         return null;
 
@@ -129,7 +124,6 @@ public class MultiTypeAdapter extends RecyclerAdapter {
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-        log("onBindViewHolder -- position : " + position);
         if (position == 0 && mViewCount == 1) return;
         if (position == mViewCount - 1) { //显示加载更多
             isLoadEnd = true;

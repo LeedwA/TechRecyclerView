@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,21 +36,21 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.lalay).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,MultiTypeActivity.class));
+                startActivity(new Intent(MainActivity.this, MultiTypeActivity.class));
             }
         });
-        ((ImageView)findViewById(R.id.imageView1)).setVisibility(View.GONE);
+        ((ImageView) findViewById(R.id.imageView1)).setVisibility(View.GONE);
 
-        mRecyclerView = (RefreshRecyclerView) findViewById(R.id.recycler_view);
+
         mAdapter = new CardRecordAdapter(this);
-        listViewManager = new ListViewManager(this, mRecyclerView, mAdapter);
+
 //        添加Header
         final TextView textView = new TextView(this);
         textView.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100));
         textView.setTextSize(16);
         textView.setGravity(Gravity.CENTER);
         textView.setText("我是header");
-        listViewManager.setHeader(textView);
+        mAdapter.setHeader(textView);
 
         //添加footer
         final TextView footer = new TextView(this);
@@ -56,8 +58,26 @@ public class MainActivity extends AppCompatActivity {
         footer.setTextSize(16);
         footer.setGravity(Gravity.CENTER);
         footer.setText("我是Footer");
-        listViewManager.setFooter(footer);
+        mAdapter.setFooter(footer);
 
+//        toInitrefreshRecycler();
+
+        toInitRecycler();
+
+    }
+
+    private void toInitRecycler() {
+        RecyclerView recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+        mAdapter.addAll(Arrays.asList(getVirtualData2()));
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setAutoMeasureEnabled(true);
+        recycler_view.setLayoutManager(layoutManager);
+        recycler_view.setAdapter(mAdapter);
+    }
+
+    private void toInitrefreshRecycler() {
+        mRecyclerView = (RefreshRecyclerView) findViewById(R.id.recycler_view);
+        listViewManager = new ListViewManager(this, mRecyclerView, mAdapter);
         //顶部颜色
         listViewManager.setTopColor(getResources().getColor(R.color.blue_light),
                 getResources().getColor(R.color.blue_light),
@@ -67,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         listViewManager.setTopRefresh(new Action() {
             @Override
             public void onAction() {
-                listViewManager.page=1;
+                listViewManager.page = 1;
                 listViewManager.getData(true, new ArrayList());
             }
         });
@@ -92,8 +112,6 @@ public class MainActivity extends AppCompatActivity {
 
         //初始化数据
         listViewManager.initData(Arrays.asList(getVirtualData()));
-
-
     }
 
 
@@ -101,21 +119,36 @@ public class MainActivity extends AppCompatActivity {
         if (listViewManager.page < 3) {
             return new Consumption[]{
                     new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-//                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
-//                    new Consumption("Demo1", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼")
+                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+                    new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+                    new Consumption("Demo1", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼")
             };
         } else {
             return new Consumption[]{
 
             };
         }
+    }
+
+    public Consumption[] getVirtualData2() {
+        return new Consumption[]{
+//                new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                new Consumption("Demo", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼"),
+//                new Consumption("Demo1", "2015-12-18 12:09", "消费", 9.7f, 24.19f, "兴业源三楼")
+        };
 
 
     }

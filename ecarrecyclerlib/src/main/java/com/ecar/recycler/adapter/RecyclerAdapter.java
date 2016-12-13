@@ -126,7 +126,7 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<BaseViewHo
                 mLoadMoreView.setVisibility(View.VISIBLE);
             }
             isLoadEnd = true;
-            if (mLoadMoreAction != null && !isLoadingMore && loadMoreAble) {
+            if (mLoadMoreAction != null && !isLoadingMore ) {
                 mLoadMoreAction.onAction();
                 isLoadingMore = true;
             }
@@ -155,13 +155,19 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<BaseViewHo
         return mViewCount;
     }
 
-    public void showNoMore() {
+    /****************************************
+     方法描述： 设为不可刷新
+     @param  isShowstatus  true   显示状态栏
+     @return
+     ****************************************/
+    public void showNoMore(final boolean isShowstatus) {
         isShowNoMore = true;
         mLoadMoreView.post(new Runnable() {
             @Override
             public void run() {
                 mLoadMoreView.setVisibility(View.GONE);
-                mNoMoreView.setVisibility(View.VISIBLE);
+                mNoMoreView.setVisibility(isShowstatus?View.VISIBLE:View.GONE);
+
             }
         });
     }

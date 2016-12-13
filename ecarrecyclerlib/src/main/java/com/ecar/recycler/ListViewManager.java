@@ -3,13 +3,12 @@ package com.ecar.recycler;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import java.util.List;
 
 import com.ecar.recycler.adapter.Action;
 import com.ecar.recycler.adapter.RecyclerAdapter;
-
-import static android.R.id.list;
 
 /*************************************
  * 功能： listview管理器
@@ -21,9 +20,6 @@ import static android.R.id.list;
 public class ListViewManager<T> {
     public RefreshRecyclerView refreshRecyclerView;
     public RecyclerAdapter<T> recyclerAdapter;
-    public View header;
-    public View footer;
-    public View emptyView;//空页面
 
 
     Datas datas;//获取数据后的动作
@@ -42,7 +38,11 @@ public class ListViewManager<T> {
         this.refreshRecyclerView = refreshRecyclerView;
         this.refreshRecyclerView.setAdapter(this.recyclerAdapter);
         refreshRecyclerView.setSwipeRefreshColors(0xFF437845, 0xFFE44F98, 0xFF2FAC21);
-        refreshRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        layoutManager.setAutoMeasureEnabled(true);
+//        refreshRecyclerView.setLayoutManager(new myLinearLayoutManager(context, LinearLayout.VERTICAL,false));
+        refreshRecyclerView.setLayoutManager(layoutManager);
+
         this.page = 1;
         datas = new Datas() {
             @Override
@@ -55,6 +55,9 @@ public class ListViewManager<T> {
                 }
                 refreshRecyclerView.dismissSwipeRefresh();
                 page = 1;
+                if (list == null || list.isEmpty() || list.size() < size) {
+                    refreshRecyclerView.showNoMore(false);
+                }
 
             }
 
@@ -62,7 +65,7 @@ public class ListViewManager<T> {
             public void onGetMore(List list) {
                 recyclerAdapter.addAll(list);
                 if (list == null || list.isEmpty() || list.size() < size) {
-                    refreshRecyclerView.showNoMore();
+                    refreshRecyclerView.showNoMore(true);
                 }
             }
         };
@@ -116,6 +119,7 @@ public class ListViewManager<T> {
 
     public void initData(List list) {
         refreshRecyclerView.showSwipeRefresh();
+        recyclerAdapter.isLoadingMore=true;
         getData(true, list);
     }
 
